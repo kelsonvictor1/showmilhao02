@@ -4,49 +4,52 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import br.com.showmilhao.model.Pergunta;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
-import br.com.showmilhao.model.CrudDao;
-import br.com.showmilhao.model.Pergunta;
-import br.com.showmilhao.model.User;
 
-
-public class CRUDControllerPerguntas extends HttpServlet {
+public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private CrudDao dao;
-
-	public CRUDControllerPerguntas() throws InstantiationException, IllegalAccessException {
-		dao=new CrudDao();
+	
+	public IndexController(){
+		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		String str = request.getParameter("action");
 	}
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("action")!=null){
+			
 			
 			//List<User> lstUser=new ArrayList<User>();
 			List<Pergunta> lstPergunta = new ArrayList<Pergunta>(); 
 			
 			String action=(String)request.getParameter("action");
 			
+			
+			
 			Gson gson = new Gson();
+			
 			
 			response.setContentType("application/json");
 
 			if(action.equals("list")){
 				try{      
-					//Fetch Data from Perguntas Table
-					lstPergunta=dao.getPerguntas();   
+					//Fetch Data from User Table
+					 
 					//Convert Java Object to Json    
 					JsonElement element = gson.toJsonTree(lstPergunta, new TypeToken<List<Pergunta>>() {}.getType());
 					JsonArray jsonArray = element.getAsJsonArray();
@@ -98,10 +101,12 @@ public class CRUDControllerPerguntas extends HttpServlet {
 				}
 			
 				try{           
-								
+					
+					
 					if(action.equals("create")){//Create new record
-							
-						dao.addPergunta(pergunta);     
+						
+						
+						 
 						lstPergunta.add(pergunta);
 						//Convert Java Object to Json    
 						String json=gson.toJson(lstPergunta);
@@ -109,12 +114,12 @@ public class CRUDControllerPerguntas extends HttpServlet {
 						System.out.println("JSONN: "+json);
 						
 						//Return Json in the format required by jTable plugin
-						String listData="{\"Result\":\"OK\",\"Record\":"+json+"}";  	
+						String listData="{\"Result\":\"OK\",\"Record\":"+json+"}";  
+						
 						
 						response.getWriter().print(listData);
-						
 					}else if(action.equals("update")){//Update existing record
-						dao.updatePergunta(pergunta);
+						
 						String listData="{\"Result\":\"OK\"}";         
 						response.getWriter().print(listData);
 					}
@@ -126,7 +131,7 @@ public class CRUDControllerPerguntas extends HttpServlet {
 				try{
 					if(request.getParameter("id")!=null){
 						String id=(String)request.getParameter("id");
-						dao.deletePergunta(Integer.parseInt(id));
+						
 						String listData="{\"Result\":\"OK\"}";        
 						response.getWriter().print(listData);
 					}

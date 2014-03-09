@@ -10,7 +10,7 @@ import java.util.Properties;
 
 
 public class DBUtility {
- private static Connection connection = null;
+	private static Connection connection = null;
 
     public static Connection getConnection() throws InstantiationException, IllegalAccessException {
         if (connection != null)

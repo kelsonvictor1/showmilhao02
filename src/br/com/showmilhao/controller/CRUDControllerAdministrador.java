@@ -9,37 +9,34 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.showmilhao.model.Administrador;
 import br.com.showmilhao.model.CrudDao;
-import br.com.showmilhao.model.Pergunta;
-import br.com.showmilhao.model.User;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
-
-public class CRUDController extends HttpServlet {
+public class CRUDControllerAdministrador extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CrudDao dao;
 
-	public CRUDController() throws InstantiationException, IllegalAccessException {
+	public  CRUDControllerAdministrador() 
+			throws InstantiationException, IllegalAccessException {
 		dao=new CrudDao();
 	}
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 
 	}
 
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		if(request.getParameter("action")!=null){
-		
-			List<User> lstUser=new ArrayList<User>();
-			List<Pergunta> lstPergunta = new ArrayList<Pergunta>(); 
+				
+			List<Administrador> lstaAdministrador=new ArrayList<Administrador>();
+			//List<Pergunta> lstPergunta = new ArrayList<Pergunta>(); 
 			
 			String action=(String)request.getParameter("action");
 			
@@ -50,9 +47,9 @@ public class CRUDController extends HttpServlet {
 			if(action.equals("list")){
 				try{      
 					//Fetch Data from User Table
-					lstUser=dao.getAllUsers();   
+					lstaAdministrador=dao.getAllAdministradors();   
 					//Convert Java Object to Json    
-					JsonElement element = gson.toJsonTree(lstUser, new TypeToken<List<User>>() {}.getType());
+					JsonElement element = gson.toJsonTree(lstaAdministrador, new TypeToken<List<Administrador>>() {}.getType());
 					JsonArray jsonArray = element.getAsJsonArray();
 					String listData=jsonArray.toString();    
 					//Return Json in the format required by jTable plugin
@@ -65,34 +62,35 @@ public class CRUDController extends HttpServlet {
 				}    
 			}
 			else if(action.equals("create") || action.equals("update")){
-				User user=new User();
-				if(request.getParameter("id")!=null){       
-					int userid=Integer.parseInt(request.getParameter("id"));
-					user.setId(userid);
-				}
+				Administrador administrador = new Administrador();				
 				if(request.getParameter("name")!=null){
-					String firstname=(String)request.getParameter("name");
-					user.setName(firstname);
+					String name=(String)request.getParameter("name");
+					administrador.setName(name);
 				}
 				if(request.getParameter("login")!=null){
-					String lastname=(String)request.getParameter("login");
-					user.setName(lastname);
-				}
+					String login=(String)request.getParameter("login");
+					administrador.setLogin(login);
+				}				
 				if(request.getParameter("senha")!=null){
 					String senha=(String)request.getParameter("senha");
-					user.setSenha(senha);
+					administrador.setSenha(senha);
 				}
-				try{           
+				if(request.getParameter("nivel")!=null){
+					String nivel=(String)request.getParameter("nivel");
+					administrador.setNivel(nivel);
+				}
+				try{           	
 					if(action.equals("create")){//Create new record
-						dao.addUser(user);     
-						lstUser.add(user);
+						dao.addAdministrador(administrador);  						
+						lstaAdministrador.add(administrador);
 						//Convert Java Object to Json    
-						String json=gson.toJson(user);     
+						String json=gson.toJson(lstaAdministrador);						
+						System.out.println("JSONN: "+json);						
 						//Return Json in the format required by jTable plugin
-						String listData="{\"Result\":\"OK\",\"Record\":"+json+"}";           
+						String listData="{\"Result\":\"OK\",\"Record\":"+json+"}";  
 						response.getWriter().print(listData);
 					}else if(action.equals("update")){//Update existing record
-						dao.updateUser(user);
+						dao.updateAdministrador(administrador);
 						String listData="{\"Result\":\"OK\"}";         
 						response.getWriter().print(listData);
 					}
@@ -102,9 +100,9 @@ public class CRUDController extends HttpServlet {
 				}
 			}else if(action.equals("delete")){//Delete record
 				try{
-					if(request.getParameter("userid")!=null){
-						String userid=(String)request.getParameter("userid");
-						dao.deleteUser(Integer.parseInt(userid));
+					if(request.getParameter("adminId")!=null){
+						String adminId=(String)request.getParameter("adminId");
+						dao.deleteAdministrador(Integer.parseInt(adminId));
 						String listData="{\"Result\":\"OK\"}";        
 						response.getWriter().print(listData);
 					}

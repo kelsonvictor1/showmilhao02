@@ -1,20 +1,31 @@
 package br.com.showmilhao.model;
 
+import java.util.ArrayList;
+import java.util.List;
 
-
-public class User {
-
-	private int id;
+public class Administrador {
+	
+	private int adminId;
 	private String name;
 	private String login; 
 	private String senha;
-
-	public int getId() {
-		return id;
+	private final String nivel = "1";
+	
+	public Administrador(){}
+	
+	public String getNivel() {
+		return nivel;
+	}
+	public void setNivel(String nivel2) {
+		// TODO Auto-generated method stub
+		
+	}
+	public int getAdminId() {
+		return adminId;
 	}
 
-	public void setId(int userid) {
-		this.id = userid;
+	public void setAdminId(int adminId) {
+		this.adminId = adminId;
 	}
 
 	public String getName() {
@@ -41,9 +52,6 @@ public class User {
 		this.senha = senha;
 	}
 
-	public String toString() {
-		return "User [userid=" + id + ", firstName=" + name + "]";
-	}
-
-
+	
+	
 }
