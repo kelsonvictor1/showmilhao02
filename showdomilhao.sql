@@ -90,8 +90,24 @@ CREATE TABLE IF NOT EXISTS `teste` (
 
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user` varchar(100) NOT NULL,
-  `senha` varchar(200) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `login` varchar(30) NOT NULL,
+  `senha` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `administrador`
+--
+
+CREATE TABLE IF NOT EXISTS `administrador` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `login` varchar(30) NOT NULL,
+  `senha` varchar(30) NOT NULL,
+  `nivel` varchar(8) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
